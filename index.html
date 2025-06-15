@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitVar - BitLife Content Unlocker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #2c2c2c;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #ff4444;
+        }
+        .container {
+            max-width: 600px;
+            width: 90%;
+            padding: 20px;
+            background-color: #2c2c2c;
+            border-radius: 8px;
+            margin: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .upload-section, .selection-section {
+            text-align: center;
+        }
+        .upload-section input[type="file"] {
+            padding: 10px;
+            background-color: #333;
+            color: #e0e0e0;
+            border: 1px solid #ff4444;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        .upload-section button, .selection-section button {
+            padding: 10px 20px;
+            background-color: #ff4444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+        .upload-section button:hover, .selection-section button:hover {
+            background-color: #cc3333;
+        }
+        .selection-section {
+            display: none;
+            margin-top: 20px;
+        }
+        .selection-section label {
+            display: block;
+            margin: 10px 0;
+            font-size: 1.1em;
+        }
+        .selection-section input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .result-section {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .result-section a {
+            color: #ff4444;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .result-section a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: auto;
+            padding: 10px;
+            text-align: center;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>BitVar - BitLife Content Unlocker</h1>
+    </header>
+    <div class="container">
+        <div class="upload-section" id="uploadSection">
+            <h2>Create MonetizationVars File</h2>
+            <p>Please upload your MonetizationVars file to begin the process.</p>
+            <input type="file" id="fileInput" accept=".bin,.txt">
+            <button onclick="handleFileUpload()">Proceed</button>
+        </div>
+        <div class="selection-section" id="selectionSection">
+            <h2>Select Premium Content</h2>
+            <p>Kindly select the premium content you wish to unlock.</p>
+            <label><input type="checkbox" id="bitizenship"> Bitizenship</label>
+            <label><input type="checkbox" id="godMode"> God Mode</label>
+            <label><input type="checkbox" id="bossMode"> Boss Mode</label>
+            <label><input type="checkbox" id="zooExpansion"> Zoo Expansion</label>
+            <label><input type="checkbox" id="mafiaExpansion"> Mafia Expansion</label>
+            <label><input type="checkbox" id="landlordExpansion"> Landlord Expansion</label>
+            <label><input type="checkbox" id="actorPack"> Actor Job Pack</label>
+            <button onclick="generateFile()">Generate File</button>
+        </div>
+        <div class="result-section" id="result">
+            <!-- Result will appear here -->
+        </div>
+    </div>
+    <footer>
+        <p>BitVar - All Rights Reserved. 2025.</p>
+    </footer>
+    <script>
+        function handleFileUpload() {
+            const fileInput = document.getElementById('fileInput');
+            const resultDiv = document.getElementById('result');
+            const uploadSection = document.getElementById('uploadSection');
+            const selectionSection = document.getElementById('selectionSection');
+
+            if (!fileInput.files.length) {
+                resultDiv.innerHTML = '<p class="error">Please select a file to proceed.</p>';
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                uploadSection.style.display = 'none';
+                selectionSection.style.display = 'block';
+                resultDiv.innerHTML = '<p>File successfully uploaded. Please select your desired content above.</p>';
+            };
+
+            reader.onerror = function() {
+                resultDiv.innerHTML = '<p class="error">An error occurred while reading the file.</p>';
+            };
+
+            reader.readAsText(file);
+        }
+
+        function generateFile() {
+            const resultDiv = document.getElementById('result');
+            
+            const bitizenship = document.getElementById('bitizenship').checked;
+            const godMode = document.getElementById('godMode').checked;
+            const bossMode = document.getElementById('bossMode').checked;
+            const zooExpansion = document.getElementById('zooExpansion').checked;
+            const mafiaExpansion = document.getElementById('mafiaExpansion').checked;
+            const landlordExpansion = document.getElementById('landlordExpansion').checked;
+            const actorPack = document.getElementById('actorPack').checked;
+
+            const monetizationVars = {
+                bitizenship: bitizenship,
+                god_mode: godMode,
+                boss_mode: bossMode,
+                expansions: [],
+                job_packs: [],
+                money: "unlimited",
+                timestamp: new Date().toISOString()
+            };
+
+            if (zooExpansion) monetizationVars.expansions.push("zoo");
+            if (mafiaExpansion) monetizationVars.expansions.push("mafia");
+            if (landlordExpansion) monetizationVars.expansions.push("landlord");
+            if (actorPack) monetizationVars.job_packs.push("actor");
+
+            const blob = new Blob([JSON.stringify(monetizationVars, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            resultDiv.innerHTML = `<p>Your customized file is ready. <a href="${url}" download="MonetizationVars.json">Download File</a></p>`;
+        }
+    </script>
+</body>
+</html>
